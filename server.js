@@ -8,6 +8,8 @@ server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
 
+console.log("server is listening on port ", port);
+
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
