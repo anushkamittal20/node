@@ -211,3 +211,49 @@ module.exports.nearestAmbulances = function (req, res) {
 
   res.status(200).json(returnData);
 };
+var userConfirmation = false;
+var GETCurrentLocation;
+module.exports.notify = function (req, res) {
+   GETCurrentLocation = req.body.currentLocation;
+  userConfirmation = true;
+  let returnData = {};
+  returnData.message = "userLocatedWithinRadius is called123";
+  returnData.userConfirmation=userConfirmation;
+  
+
+  res.status(200).json(returnData);
+};
+  /*let GETUserLng = req.body.Lat;
+  let GETUserLat = req.body.Lng;*/
+  
+      // userConfirmation = true;
+      //res.send(userConfirmation);
+      //res.send(GETUserLat);
+      //let returnData = {};
+  //returnData.L = GETUserLat;
+
+
+//  res.status(200);
+
+// };
+module.exports.notify2 = function (req, res){
+
+  let returnData = {};
+  returnData.message = "notify2 for ambulance is called123";
+  returnData.userConfirmation=userConfirmation;
+  if(!userConfirmation) {
+    returnData.currentLocation = {"lat":0.0,"lng":0.0};
+  }else{
+  returnData.currentLocation = GETCurrentLocation;
+  }userConfirmation=false;
+  
+  //return user location
+
+
+
+/*module.exports.notify2 = function (req, res){
+const location=require("./get_users_location.controller");
+location.getUsersLocation()*/
+
+res.status(200).json(returnData);
+}
