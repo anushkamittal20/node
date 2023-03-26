@@ -219,9 +219,9 @@ module.exports.notify = function (req, res) {
   let returnData = {};
   returnData.message = "userLocatedWithinRadius is called123";
   returnData.userConfirmation=userConfirmation;
-  
+  res.send(userConfirmation)
 
-  res.status(200).json(returnData);
+  //res.status(200).json(returnData);
 };
   /*let GETUserLng = req.body.Lat;
   let GETUserLat = req.body.Lng;*/
