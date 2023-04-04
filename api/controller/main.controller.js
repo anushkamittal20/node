@@ -1,3 +1,4 @@
+
 module.exports.chooseService = function (req, res) {
   /*
     Request has to be of the form:
@@ -239,21 +240,66 @@ module.exports.notify = function (req, res) {
 module.exports.notify2 = function (req, res){
 
   let returnData = {};
-  returnData.message = "notify2 for ambulance is called123";
+  // returnData.message = "notify2 for ambulance is called123";
   returnData.userConfirmation=userConfirmation;
-  if(!userConfirmation) {
-    returnData.currentLocation = {"lat":0.0,"lng":0.0};
-  }else{
-  returnData.currentLocation = GETCurrentLocation;
-  }userConfirmation=false;
+  //users location
+  // if(!userConfirmation) {
+  //   returnData.currentLocation = {"lat":0.0,"lng":0.0};
+  // }else{
+  // returnData.currentLocation = GETCurrentLocation;
+  // }
+  userConfirmation=false;
   
   //return user location
 
 
 
-/*module.exports.notify2 = function (req, res){
-const location=require("./get_users_location.controller");
-location.getUsersLocation()*/
-
 res.status(200).json(returnData);
 }
+
+
+
+
+module.exports.ambulanceReturn = function (req, res){
+
+  let origin = req.body.origin;
+  let destination = req.body.destination;
+  // let vals=Object.values(GETCurrentLocation);
+  // const obj = JSON.stringify(GETCurrentLocation);
+  // console.log(obj.GETCurrentLocation.lat);
+
+// var GETAmbulanLocation=req.body.ambulanceLocation;
+// var origin = GETCurrentLocation.lat.concat(GETCurrentLocation.lng);
+// var destination=GETAmbulanLocation.lat.concat(GETAmbulanLocation.lng);
+var axios = require('axios');
+
+var config = {
+  method: 'get',
+  url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin.lat},${origin.lng}&destinations=${destination.lat},${destination.lng}&key=AIzaSyBcQSmBY1QhFLMcfDHsIFp5YEgdj6I_Ge8`,
+  headers: { }
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+  console.log(JSON.stringify(response.data.rows[0].elements[0].duration.text));
+  let eta=JSON.stringify(response.data.rows[0].elements[0].duration.text);
+  let returnData = {};
+  returnData.origin = origin;
+  returnData.ETA=eta;
+  res.status(200).json(returnData);
+})
+
+.catch(function (error) {
+  console.log(error);
+});
+
+// let eta=response.rows[0].elements[0].duration_in_traffic.text;
+// console.log(eta);
+
+
+//return eta and user location
+
+
+}
+  

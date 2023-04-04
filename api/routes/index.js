@@ -14,7 +14,7 @@ router.route("/nearestAmbulance").get(appController.nearestAmbulances);
 
 router.route("/confirmUser").get(appController.notify);
 router.route("/confirmAmbulance").get(appController.notify2);
-
+router.route("/ambulanceReturn").get(appController.ambulanceReturn);
 
 // router.route("/decodeWaypoints").get(appController.decodeWaypoints);
 
