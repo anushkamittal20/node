@@ -237,6 +237,54 @@ module.exports.notify = function (req, res) {
 //  res.status(200);
 
 // };
+
+module.exports.ambulanceReturn = function (req, res){
+
+  // let origin={};
+  // origin.lat = GETCurrentLocation.lat;
+  // origin.lng=GETCurrentLocation.lng;
+  // res.JSON(origin);
+  let destination = req.body.destination;
+  // let vals=Object.values(GETCurrentLocation);
+  // const obj = JSON.stringify(GETCurrentLocation);
+  // console.log(obj.GETCurrentLocation.lat);
+
+// var GETAmbulanLocation=req.body.ambulanceLocation;
+// var origin = GETCurrentLocation.lat.concat(GETCurrentLocation.lng);
+// var destination=GETAmbulanLocation.lat.concat(GETAmbulanLocation.lng);
+var axios = require('axios');
+
+var config = {
+  method: 'get',
+  url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${GETCurrentLocation.lat},${GETCurrentLocation.lng}&destinations=${destination.lat},${destination.lng}&key=AIzaSyBcQSmBY1QhFLMcfDHsIFp5YEgdj6I_Ge8`,
+  headers: { }
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+  console.log(JSON.stringify(response.data.rows[0].elements[0].duration.text));
+  let eta=JSON.stringify(response.data.rows[0].elements[0].duration.text);
+  let returnData = {};
+  returnData.currentLocation = GETCurrentLocation;
+  returnData.ETA=eta;
+  res.status(200).json(returnData);
+})
+
+.catch(function (error) {
+  console.log(error);
+});
+
+// let eta=response.rows[0].elements[0].duration_in_traffic.text;
+// console.log(eta);
+
+
+//return eta and user location
+
+
+};
+  
+
 module.exports.notify2 = function (req, res){
 
   let returnData = {};
@@ -255,51 +303,7 @@ module.exports.notify2 = function (req, res){
 
 
 res.status(200).json(returnData);
-}
-
-
-
-
-module.exports.ambulanceReturn = function (req, res){
-
-  let origin = req.body.origin;
-  let destination = req.body.destination;
-  // let vals=Object.values(GETCurrentLocation);
-  // const obj = JSON.stringify(GETCurrentLocation);
-  // console.log(obj.GETCurrentLocation.lat);
-
-// var GETAmbulanLocation=req.body.ambulanceLocation;
-// var origin = GETCurrentLocation.lat.concat(GETCurrentLocation.lng);
-// var destination=GETAmbulanLocation.lat.concat(GETAmbulanLocation.lng);
-var axios = require('axios');
-
-var config = {
-  method: 'get',
-  url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin.lat},${origin.lng}&destinations=${destination.lat},${destination.lng}&key=AIzaSyBcQSmBY1QhFLMcfDHsIFp5YEgdj6I_Ge8`,
-  headers: { }
 };
 
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data));
-  console.log(JSON.stringify(response.data.rows[0].elements[0].duration.text));
-  let eta=JSON.stringify(response.data.rows[0].elements[0].duration.text);
-  let returnData = {};
-  returnData.origin = origin;
-  returnData.ETA=eta;
-  res.status(200).json(returnData);
-})
 
-.catch(function (error) {
-  console.log(error);
-});
-
-// let eta=response.rows[0].elements[0].duration_in_traffic.text;
-// console.log(eta);
-
-
-//return eta and user location
-
-
-}
   
