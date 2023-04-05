@@ -1,4 +1,4 @@
-var express = require("express");
+const express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
@@ -16,10 +16,21 @@ const xssClean = require("xss-clean");
 // For nodejs express
 var appRoutes = require("./api/routes");
 
+const app = express();
+
+//Routes
+app.get("/", (req, res) => {
+  res.send("Welcome home!");
+});
+
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running at port ${port}`);
+});
+
 /* ---------------------------------------------------------------
 ** Express Setting
 ---------------------------------------------------------------- */
-var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
