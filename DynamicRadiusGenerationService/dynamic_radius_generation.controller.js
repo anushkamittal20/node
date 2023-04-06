@@ -5,7 +5,7 @@ app.use(express.json());
 
 //Routes
 app.post("/dynamicRadiusGeneration/", (req, res) => {
-  waypoints = req.body;
+  waypoints = req.body.waypoints;
   console.log(waypoints);
   const result = findMinDistance(waypoints);
   console.log(result);

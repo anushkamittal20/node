@@ -1,3 +1,22 @@
+const express = require("express");
+const app = express();
+let initialWaypoints = [];
+app.use(express.json());
+
+//Routes
+app.post("/generateWaypoints/", (req, res) => {
+  initialWaypoints = req.body.initialWaypoints;
+  console.log(initialWaypoints);
+  const result = generateWaypoints(initialWaypoints);
+  console.log(result);
+  res.status(200).send(result);
+});
+
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running at port ${port}`);
+});
+
 function generateWaypoints(decodedWaypoints) {
   var count = 0;
 
@@ -54,4 +73,4 @@ function distance(lat1, lat2, lon1, lon2) {
 
 // uses the decoded polyline and op is also an array of co ordinates
 
-module.exports = { generateWaypoints };
+// module.exports = { generateWaypoints };
