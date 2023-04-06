@@ -1,3 +1,23 @@
+const express = require("express");
+const app = express();
+let polyline = "";
+let precision = "";
+
+//Routes
+app.get("/decodeWaypoints/:polyline/:precision", (req, res) => {
+  polyline = req.params.polyline;
+  precision = req.params.precision;
+  const result = decodePath(polyline, precision);
+  console.log(result);
+  res.status(200).send(result);
+  res.send("Welcome to decode waypoints service!");
+});
+
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running at port ${port}`);
+});
+
 function decodePath(polyline, precision) {
   var index = 0,
     lat = 0,
@@ -46,4 +66,4 @@ function decodePath(polyline, precision) {
 }
 // takes in a polyline ob (flutter) as ip and output is the decoded polyline (array)
 
-module.exports = { decodePath };
+// module.exports = { decodePath };
