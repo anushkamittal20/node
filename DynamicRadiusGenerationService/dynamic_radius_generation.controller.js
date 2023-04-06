@@ -1,3 +1,22 @@
+const express = require("express");
+const app = express();
+let waypoints = "";
+app.use(express.json());
+
+//Routes
+app.post("/dynamicRadiusGeneration/", (req, res) => {
+  waypoints = req.body;
+  console.log(waypoints);
+  const result = findMinDistance(waypoints);
+  console.log(result);
+  res.status(200).send(result.toString());
+});
+
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running at port ${port}`);
+});
+
 function findMinDistance(waypoints) {
   // Initialize difference as infinite
   var diff = 99999999,
@@ -50,4 +69,4 @@ function distance(lat1, lat2, lon1, lon2) {
   return c * r;
 }
 
-module.exports = { findMinDistance, distance };
+// module.exports = { findMinDistance, distance };
