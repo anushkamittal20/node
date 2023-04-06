@@ -1,3 +1,22 @@
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+//Routes
+app.post("/userLocatedWithinRadius/", (req, res) => {
+  const checkPoint = req.body.checkPoint;
+  const centerPoint = req.body.centerPoint;
+  const km = req.body.km;
+  const result = userLocatedWithinRadius(checkPoint, centerPoint, km);
+  console.log(result);
+  res.status(200).send(result);
+});
+
+let port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running at port ${port}`);
+});
+
 function userLocatedWithinRadius(checkPoint, centerPoint, km) {
   var ky = 40000 / 360;
   var kx = Math.cos((Math.PI * centerPoint.lat) / 180.0) * ky;
@@ -7,4 +26,4 @@ function userLocatedWithinRadius(checkPoint, centerPoint, km) {
   return Math.sqrt(dx * dx + dy * dy) <= km;
 }
 
-module.exports = { userLocatedWithinRadius };
+// module.exports = { userLocatedWithinRadius };
