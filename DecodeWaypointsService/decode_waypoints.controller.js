@@ -10,7 +10,7 @@ app.get("/decodeWaypoints/:polyline/:precision", (req, res) => {
   const result = decodePath(polyline, precision);
   console.log(result);
   res.status(200).send(result);
-  res.send("Welcome to decode waypoints service!");
+ // res.send("Welcome to decode waypoints service!");
 });
 
 let port = process.env.PORT || 3000;
