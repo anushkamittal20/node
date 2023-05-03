@@ -1,43 +1,42 @@
+// module.exports.chooseService = function (req, res) {
+//   /*
+//     Request has to be of the form:
+//     {
+//     "serviceName": "ambulance",
+//     "position": {
+//         "coords" : {
+//             "latitude" : 13.0147,
+//             "longitude": 77.581
+//         }
+//     },
+//     "to" : "THIS_PLACE"
+//     }
+//     */
+//   console.log("chooseService is called ");
 
-module.exports.chooseService = function (req, res) {
-  /*
-    Request has to be of the form:
-    {
-    "serviceName": "ambulance", 
-    "position": {
-        "coords" : {
-            "latitude" : 13.0147,
-            "longitude": 77.581
-        }
-    },
-    "to" : "THIS_PLACE"
-    }
-    */
-  console.log("chooseService is called ");
+//   // getting values from postman/client
+//   let GETchosenService = req.body.serviceName;
+//   let GETPosition = req.body.position;
+//   let GETTo = req.body.to;
 
-  // getting values from postman/client
-  let GETchosenService = req.body.serviceName;
-  let GETPosition = req.body.position;
-  let GETTo = req.body.to;
+//   // creating a chooseService object
+//   const choose_service = require("./chooseService.controller");
+//   // calling functions
+//   choose_service.chooseService("", GETchosenService);
+//   choose_service.confirmService();
+//   // choose_service.getLocation();
+//   choose_service.showPosition(GETPosition);
+//   choose_service.goTo(GETTo);
 
-  // creating a chooseService object
-  const choose_service = require("./chooseService.controller");
-  // calling functions
-  choose_service.chooseService("", GETchosenService);
-  choose_service.confirmService();
-  // choose_service.getLocation();
-  choose_service.showPosition(GETPosition);
-  choose_service.goTo(GETTo);
+//   // returning whatever we've received so far
+//   let returnData = {};
+//   returnData.message = "chooseService is called";
+//   returnData.selectedService = GETchosenService;
+//   returnData.position = GETPosition;
+//   returnData.to = GETTo;
 
-  // returning whatever we've received so far
-  let returnData = {};
-  returnData.message = "chooseService is called";
-  returnData.selectedService = GETchosenService;
-  returnData.position = GETPosition;
-  returnData.to = GETTo;
-
-  res.status(200).json(returnData);
-};
+//   res.status(200).json(returnData);
+// };
 
 // module.exports.decodeWaypoints = function (req, res) {
 //   /*
@@ -116,29 +115,61 @@ module.exports.chooseService = function (req, res) {
     res.status(200).json(returnData);
   };
   */
+
 module.exports.userLocatedWithinRadius = function (req, res) {
+  const targetAppUrl = "http://10.45.129.27:3000";
   let GETCurrentLocation = req.body.currentLocation;
   let GETImmediateWaypoints = req.body.iwaypoints;
   let GETRadius = req.body.radius;
-  let GETMAXRadius = req.body.maxRadius;
+  const requestData = { GETCurrentLocation, GETImmediateWaypoints, GETRadius };
 
-  const user_located_within_radius = require("./user_located_within_radius.controller");
+  let result1, result2;
 
-  let result = user_located_within_radius.userLocatedWithinRadius(
-    GETCurrentLocation,
-    GETImmediateWaypoints,
-    GETRadius
-  );
+  fetch(`${targetAppUrl}/usr/node/user-service`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestData),
+  })
+    .then((response) => {
+      if (response.ok) {
+        result1 = response.json();
+      } else {
+        throw new Error("Failed to get response from target app");
+      }
+    })
+    .then((data) => {
+      console.log("Got response from target app:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 
-  let result2 = user_located_within_radius.userLocatedWithinRadius(
-    GETCurrentLocation,
-    GETImmediateWaypoints,
-    GETMAXRadius
-  );
+  fetch(`${targetAppUrl}/usr/node/user-service`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestData),
+  })
+    .then((response) => {
+      if (response.ok) {
+        result2 = response.json();
+      } else {
+        throw new Error("Failed to get response from target app");
+      }
+    })
+    .then((data) => {
+      console.log("Got response from target app:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 
   let returnData = {};
   returnData.message = "userLocatedWithinRadius is called";
-  returnData.green = result;
+  returnData.green = result1;
   returnData.yellow = result2;
 
   res.status(200).json(returnData);
@@ -215,31 +246,29 @@ module.exports.nearestAmbulances = function (req, res) {
 var userConfirmation = false;
 var GETCurrentLocation;
 module.exports.notify = function (req, res) {
-   GETCurrentLocation = req.body.currentLocation;
+  GETCurrentLocation = req.body.currentLocation;
   userConfirmation = true;
   let returnData = {};
   returnData.message = "userLocatedWithinRadius is called123";
-  returnData.userConfirmation=userConfirmation;
-  res.send(userConfirmation)
+  returnData.userConfirmation = userConfirmation;
+  res.send(userConfirmation);
 
   //res.status(200).json(returnData);
 };
-  /*let GETUserLng = req.body.Lat;
+/*let GETUserLng = req.body.Lat;
   let GETUserLat = req.body.Lng;*/
-  
-      // userConfirmation = true;
-      //res.send(userConfirmation);
-      //res.send(GETUserLat);
-      //let returnData = {};
-  //returnData.L = GETUserLat;
 
+// userConfirmation = true;
+//res.send(userConfirmation);
+//res.send(GETUserLat);
+//let returnData = {};
+//returnData.L = GETUserLat;
 
 //  res.status(200);
 
 // };
 
-module.exports.ambulanceReturn = function (req, res){
-
+module.exports.ambulanceReturn = function (req, res) {
   // let origin={};
   // origin.lat = GETCurrentLocation.lat;
   // origin.lng=GETCurrentLocation.lng;
@@ -249,61 +278,53 @@ module.exports.ambulanceReturn = function (req, res){
   // const obj = JSON.stringify(GETCurrentLocation);
   // console.log(obj.GETCurrentLocation.lat);
 
-// var GETAmbulanLocation=req.body.ambulanceLocation;
-// var origin = GETCurrentLocation.lat.concat(GETCurrentLocation.lng);
-// var destination=GETAmbulanLocation.lat.concat(GETAmbulanLocation.lng);
-var axios = require('axios');
+  // var GETAmbulanLocation=req.body.ambulanceLocation;
+  // var origin = GETCurrentLocation.lat.concat(GETCurrentLocation.lng);
+  // var destination=GETAmbulanLocation.lat.concat(GETAmbulanLocation.lng);
+  var axios = require("axios");
 
-var config = {
-  method: 'get',
-  url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${GETCurrentLocation.lat},${GETCurrentLocation.lng}&destinations=${destination.lat},${destination.lng}&key=AIzaSyBcQSmBY1QhFLMcfDHsIFp5YEgdj6I_Ge8`,
-  headers: { }
+  var config = {
+    method: "get",
+    url: `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${GETCurrentLocation.lat},${GETCurrentLocation.lng}&destinations=${destination.lat},${destination.lng}&key=AIzaSyBcQSmBY1QhFLMcfDHsIFp5YEgdj6I_Ge8`,
+    headers: {},
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+      console.log(
+        JSON.stringify(response.data.rows[0].elements[0].duration.text)
+      );
+      let eta = JSON.stringify(response.data.rows[0].elements[0].duration.text);
+      let returnData = {};
+      returnData.currentLocation = GETCurrentLocation;
+      returnData.ETA = eta;
+      res.status(200).json(returnData);
+    })
+
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  // let eta=response.rows[0].elements[0].duration_in_traffic.text;
+  // console.log(eta);
+
+  //return eta and user location
 };
 
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data));
-  console.log(JSON.stringify(response.data.rows[0].elements[0].duration.text));
-  let eta=JSON.stringify(response.data.rows[0].elements[0].duration.text);
-  let returnData = {};
-  returnData.currentLocation = GETCurrentLocation;
-  returnData.ETA=eta;
-  res.status(200).json(returnData);
-})
-
-.catch(function (error) {
-  console.log(error);
-});
-
-// let eta=response.rows[0].elements[0].duration_in_traffic.text;
-// console.log(eta);
-
-
-//return eta and user location
-
-
-};
-  
-
-module.exports.notify2 = function (req, res){
-
+module.exports.notify2 = function (req, res) {
   let returnData = {};
   // returnData.message = "notify2 for ambulance is called123";
-  returnData.userConfirmation=userConfirmation;
+  returnData.userConfirmation = userConfirmation;
   //users location
   // if(!userConfirmation) {
   //   returnData.currentLocation = {"lat":0.0,"lng":0.0};
   // }else{
   // returnData.currentLocation = GETCurrentLocation;
   // }
-  userConfirmation=false;
-  
+  userConfirmation = false;
+
   //return user location
 
-
-
-res.status(200).json(returnData);
+  res.status(200).json(returnData);
 };
-
-
-  

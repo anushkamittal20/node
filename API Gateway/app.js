@@ -1,10 +1,14 @@
 const express = require("express");
+const app = express();
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 
 const helmet = require("helmet");
 const xssClean = require("xss-clean");
+
+//Routes
+
 /* ---------------------------------------------------------------
 ** Configurations
 ---------------------------------------------------------------- */
@@ -14,14 +18,15 @@ const xssClean = require("xss-clean");
 ** Declarations of routes
 ---------------------------------------------------------------- */
 // For nodejs express
-var appRoutes = require("./api/routes");
-
-const app = express();
 
 //Routes
 app.get("/", (req, res) => {
   res.send("Welcome home!");
 });
+
+let appRoutes = require("./routes");
+//Middleware functions to use those routes
+app.use("./routes", appRoutes);
 
 let port = process.env.PORT || 3000;
 app.listen(port, () => {

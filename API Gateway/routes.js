@@ -16,18 +16,4 @@ router.route("/confirmUser").get(appController.notify);
 router.route("/confirmAmbulance").get(appController.notify2);
 router.route("/ambulanceReturn").get(appController.ambulanceReturn);
 
-// router.route("/decodeWaypoints").get(appController.decodeWaypoints);
-
-// router
-//   .route("/dynamicRadiusGenerator")
-//   .get(appController.dynamicRadiusGenerator);
-
-// router.route("/generateWaypoints").get(appController.generateWaypoints);
-
-// router.route("/getUserLocation").get(appController.getUserLocation);
-
-// router
-//   .route("/waypointsToCoordinates")
-//   .get(appController.waypointsToCoordinates);
-
 module.exports = router;
