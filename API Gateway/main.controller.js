@@ -1,8 +1,9 @@
 const axios = require("axios");
 
 module.exports.userLocatedWithinRadius = function (req, res) {
-  const targetAppUrl = "http://10.20.129.249:30007/service/user-service/";
-  // const targetAppUrl = "https://10.20.129.249:30007/";
+  const targetAppUrl =
+    "http://10.20.129.249:30007/service/user-service/userLocatedWithinRadius";
+  // const targetAppUrl = "http://10.20.129.249:30007/";
   console.log("body", req.body);
   let currentLocation = req.body.currentLocation;
   let GETImmediateWaypoints = req.body.iwaypoints;
@@ -13,34 +14,42 @@ module.exports.userLocatedWithinRadius = function (req, res) {
   console.log("request data", requestData);
   let result1, result2;
 
-  let options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestData),
-  };
+  //method 1
+
+  // let options = {
+  //   method: "POST",
+  //   timeout: 20000,
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(requestData),
+  // };
 
   // fetch(targetAppUrl, options)
   //   .then((response) => response.json())
   //   .then((data) => console.log(data))
   //   .catch((error) => console.error(error));
 
+  //method 2
+
   async function fetcher() {
-    const res1 = await fetch(targetAppUrl, { method: "POST" }).then(
-      (response) => {
-        response.json().then((data) => {
-          if (response.status == 200) {
-            console.log("error");
-          } else {
-            console.log(data);
-          }
-        });
-      }
-    );
+    const res1 = await fetch(targetAppUrl, {
+      method: "POST",
+      timeout: 20000,
+    }).then((response) => {
+      response.json().then((data) => {
+        if (response.status == 200) {
+          console.log("error");
+        } else {
+          console.log(data);
+        }
+      });
+    });
     console.log("res1", res1);
   }
   fetcher();
+
+  //method 3
 
   // axios
   //   .post(targetAppUrl, requestData)
