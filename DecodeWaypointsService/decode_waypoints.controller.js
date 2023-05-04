@@ -1,16 +1,18 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
 let polyline = "";
 let precision = "";
 
 //Routes
-app.get("/decodeWaypoints/:polyline/:precision", (req, res) => {
-  polyline = req.params.polyline;
-  precision = req.params.precision;
+app.get("/", (req, res) => {
+  polyline = req.body.polyline;
+  precision = req.body.precision;
   const result = decodePath(polyline, precision);
   console.log(result);
   res.status(200).send(result);
- // res.send("Welcome to decode waypoints service!");
 });
 
 let port = process.env.PORT || 3000;

@@ -1,5 +1,8 @@
+const axios = require("axios");
+
 module.exports.userLocatedWithinRadius = function (req, res) {
-  const targetAppUrl = "http://10.20.129.249:30007";
+  // const targetAppUrl = "http://10.20.129.249:30007/service/user-service/";
+  const targetAppUrl = "https://10.20.129.249:30007/";
   console.log("body", req.body);
   let currentLocation = req.body.currentLocation;
   let GETImmediateWaypoints = req.body.iwaypoints;
@@ -7,54 +10,45 @@ module.exports.userLocatedWithinRadius = function (req, res) {
   console.log(GETImmediateWaypoints[0]);
   let centerPoint = GETImmediateWaypoints[0];
   let requestData = { currentLocation, centerPoint, radius };
-  console.log(requestData);
-  console.log("in user located within radius");
+  console.log("request data", requestData);
   let result1, result2;
 
-  fetch(`${targetAppUrl}`, {
+  let options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(requestData),
-  })
+  };
+
+  // fetch(targetAppUrl, options)
+  //   .then((response) => response.json())
+  //   .then((data) => console.log(data))
+  //   .catch((error) => console.error(error));
+
+  axios
+    .post(targetAppUrl, requestData)
     .then((response) => {
-      if (response.ok) {
-        result1 = response.json();
-      } else {
-        throw new Error("Failed to get response from target app");
-      }
-    })
-    .then((data) => {
-      console.log("Got response from target app:", data);
+      console.log("Response:", response.data);
     })
     .catch((error) => {
       console.error("Error:", error.message);
     });
-  console.log("json", JSON.stringify(requestData));
+
   centerPoint = GETImmediateWaypoints[1];
   requestData = { currentLocation, centerPoint, radius };
-  console.log(requestData);
-  fetch(`${targetAppUrl}/userLocatedWithinRadius/`, {
+  options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(requestData),
-  })
-    .then((response) => {
-      if (response.ok) {
-        result2 = response.json();
-      } else {
-        throw new Error("Failed to get response from target app");
-      }
-    })
-    .then((data) => {
-      console.log("Got response from target app:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-    });
+  };
+
+  // fetch(targetAppUrl, options)
+  //   .then((response) => response.json())
+  //   .then((data) => console.log(data))
+  //   .catch((error) => console.error(error));
 
   let returnData = {};
   returnData.message = "userLocatedWithinRadius is called";

@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+const bodyParser = require("body-parser");
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Routes
-app.post("/immediateWaypoints/", (req, res) => {
+app.post("/", (req, res) => {
   const waypoints = req.body.waypoints;
   console.log(waypoints);
   const result = immediateWaypoints(waypoints);

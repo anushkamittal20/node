@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
-let waypoints = "";
 app.use(express.json());
+const bodyParser = require("body-parser");
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
+let waypoints = "";
 
 //Routes
-app.post("/dynamicRadiusGeneration/", (req, res) => {
+app.post("/", (req, res) => {
   waypoints = req.body.waypoints;
   console.log(waypoints);
   const result = findMinDistance(waypoints);

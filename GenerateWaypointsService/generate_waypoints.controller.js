@@ -4,7 +4,7 @@ let initialWaypoints = [];
 app.use(express.json());
 
 //Routes
-app.post("/generateWaypoints/", (req, res) => {
+app.post("/", (req, res) => {
   initialWaypoints = req.body.initialWaypoints;
   console.log(initialWaypoints);
   const result = generateWaypoints(initialWaypoints);
