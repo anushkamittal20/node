@@ -1,13 +1,17 @@
 module.exports.userLocatedWithinRadius = function (req, res) {
-  const targetAppUrl = "http://10.45.129.27:3000";
-  let GETCurrentLocation = req.body.currentLocation;
+  const targetAppUrl = "http://10.20.129.249:30007";
+  console.log("body", req.body);
+  let currentLocation = req.body.currentLocation;
   let GETImmediateWaypoints = req.body.iwaypoints;
-  let GETRadius = req.body.radius;
-  const requestData = { GETCurrentLocation, GETImmediateWaypoints, GETRadius };
-
+  let radius = req.body.radius;
+  console.log(GETImmediateWaypoints[0]);
+  let centerPoint = GETImmediateWaypoints[0];
+  let requestData = { currentLocation, centerPoint, radius };
+  console.log(requestData);
+  console.log("in user located within radius");
   let result1, result2;
 
-  fetch(`${targetAppUrl}/usr/node/user-service`, {
+  fetch(`${targetAppUrl}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,8 +31,11 @@ module.exports.userLocatedWithinRadius = function (req, res) {
     .catch((error) => {
       console.error("Error:", error.message);
     });
-
-  fetch(`${targetAppUrl}/usr/node/user-service`, {
+  console.log("json", JSON.stringify(requestData));
+  centerPoint = GETImmediateWaypoints[1];
+  requestData = { currentLocation, centerPoint, radius };
+  console.log(requestData);
+  fetch(`${targetAppUrl}/userLocatedWithinRadius/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

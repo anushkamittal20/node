@@ -1,14 +1,16 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 var appController = require("./main.controller");
 
-// router.route("/chooseService").get(appController.chooseService);
+router.get("/", (req, res) => {
+  res.send("we are in alarms router");
+});
 
 router.route("/mainController").get(appController.mainController);
 
 router
-  .route("/userLocatedWithinRadius")
-  .get(appController.userLocatedWithinRadius);
+  .route("/userLocatedWithinRadius/")
+  .post(appController.userLocatedWithinRadius);
 
 router.route("/nearestAmbulance").get(appController.nearestAmbulances);
 

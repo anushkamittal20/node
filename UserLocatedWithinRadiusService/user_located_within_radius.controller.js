@@ -1,12 +1,15 @@
 const express = require("express");
 const app = express();
-app.use(express.json());
+const bodyParser = require("body-parser");
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Routes
-app.post("/userLocatedWithinRadius/", (req, res) => {
-  const checkPoint = req.body.checkPoint;
+app.post("/", (req, res) => {
+  console.log(req.body);
+  const checkPoint = req.body.currentLocation;
   const centerPoint = req.body.centerPoint;
-  const km = req.body.km;
+  const km = req.body.radius;
   const result = userLocatedWithinRadius(checkPoint, centerPoint, km);
   console.log(result);
   res.status(200).send(result);
