@@ -1,9 +1,7 @@
 const axios = require("axios");
 
 module.exports.userLocatedWithinRadius = function (req, res) {
-  const targetAppUrl =
-    "http://10.20.129.249:30007/service/user-service/userLocatedWithinRadius";
-  // const targetAppUrl = "http://10.20.129.249:30007/";
+  const targetAppUrl = "http://34.128.83.74:30007/";
   console.log("body", req.body);
   let currentLocation = req.body.currentLocation;
   let GETImmediateWaypoints = req.body.iwaypoints;
@@ -16,19 +14,19 @@ module.exports.userLocatedWithinRadius = function (req, res) {
 
   //method 1
 
-  // let options = {
-  //   method: "POST",
-  //   timeout: 20000,
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(requestData),
-  // };
+  let options = {
+    method: "POST",
+    timeout: 20000,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestData),
+  };
 
-  // fetch(targetAppUrl, options)
-  //   .then((response) => response.json())
-  //   .then((data) => console.log(data))
-  //   .catch((error) => console.error(error));
+  fetch(targetAppUrl, options)
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.error(error));
 
   //method 2
 
