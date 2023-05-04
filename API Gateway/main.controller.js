@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 module.exports.userLocatedWithinRadius = function (req, res) {
-  // const targetAppUrl = "http://10.20.129.249:30007/service/user-service/";
-  const targetAppUrl = "https://10.20.129.249:30007/";
+  const targetAppUrl = "http://10.20.129.249:30007/service/user-service/";
+  // const targetAppUrl = "https://10.20.129.249:30007/";
   console.log("body", req.body);
   let currentLocation = req.body.currentLocation;
   let GETImmediateWaypoints = req.body.iwaypoints;
@@ -26,14 +26,30 @@ module.exports.userLocatedWithinRadius = function (req, res) {
   //   .then((data) => console.log(data))
   //   .catch((error) => console.error(error));
 
-  axios
-    .post(targetAppUrl, requestData)
-    .then((response) => {
-      console.log("Response:", response.data);
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-    });
+  async function fetcher() {
+    const res1 = await fetch(targetAppUrl, { method: "POST" }).then(
+      (response) => {
+        response.json().then((data) => {
+          if (response.status == 200) {
+            console.log("error");
+          } else {
+            console.log(data);
+          }
+        });
+      }
+    );
+    console.log("res1", res1);
+  }
+  fetcher();
+
+  // axios
+  //   .post(targetAppUrl, requestData)
+  //   .then((response) => {
+  //     console.log("Response:", response.data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error.message);
+  //   });
 
   centerPoint = GETImmediateWaypoints[1];
   requestData = { currentLocation, centerPoint, radius };
@@ -44,14 +60,15 @@ module.exports.userLocatedWithinRadius = function (req, res) {
     },
     body: JSON.stringify(requestData),
   };
-  axios
-    .post(targetAppUrl, requestData)
-    .then((response) => {
-      console.log("Response:", response.data);
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-    });
+
+  // axios
+  //   .post(targetAppUrl, requestData)
+  //   .then((response) => {
+  //     console.log("Response:", response.data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error.message);
+  //   });
 
   // fetch(targetAppUrl, options)
   //   .then((response) => response.json())
