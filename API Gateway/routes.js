@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
   res.send("we are in alarms router");
 });
 
-router.route("/mainController").get(appController.mainController);
+router.route("/mainController").post(appController.mainController);
 
 router
   .route("/userLocatedWithinRadius/")

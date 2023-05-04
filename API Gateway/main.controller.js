@@ -49,14 +49,14 @@ module.exports.userLocatedWithinRadius = function (req, res) {
 
   //method 3
 
-  // axios
-  //   .post(targetAppUrl, requestData)
-  //   .then((response) => {
-  //     console.log("Response:", response.data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error:", error.message);
-  //   });
+  axios
+    .post(targetAppUrl, requestData)
+    .then((response) => {
+      console.log("Response:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 
   centerPoint = GETImmediateWaypoints[1];
   requestData = { currentLocation, centerPoint, radius };
@@ -98,107 +98,118 @@ module.exports.mainController = function (req, res) {
 
   let polyline = req.body.polyline;
   const requestDataForDecodeWaypoints = { polyline };
+  console.log(requestDataForDecodeWaypoints);
+  let waypoints, generatedWaypoints, minRadius, immediateWaypoint2;
+  console.log("in main controller");
 
-  let decodedPolyline, generatedWaypoints, minRadius, immediateWaypoint2;
-
-  const requestDataForGenerateWaypoints = { decodedPolyline };
-  const requestDataForDynamicRadius = { generatedWaypoints };
-  const requestDataForImmediateWaypoints = { generatedWaypoints };
-
-  fetch(`${targetAppUrl}`, {
-    // to be done for decodePolyline
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestDataForDecodeWaypoints),
-  })
+  axios
+    .post(urlDecodeWaypoints, requestDataForDecodeWaypoints)
     .then((response) => {
-      if (response.ok) {
-        decodedPolyline = response.json();
-      } else {
-        throw new Error("Failed to get response from target app");
-      }
-    })
-    .then((data) => {
-      console.log("Got response from target app:", data);
+      console.log("Response:", response.data);
     })
     .catch((error) => {
       console.error("Error:", error.message);
     });
 
-  fetch(`${targetAppUrl}/usr/node/gen-service`, {
-    //generatewaypoints
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestDataForGenerateWaypoints),
-  })
-    .then((response) => {
-      if (response.ok) {
-        generatedWaypoints = response.json();
-      } else {
-        throw new Error("Failed to get response from target app");
-      }
-    })
-    .then((data) => {
-      console.log("Got response from target app:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-    });
+  // const requestDataForGenerateWaypoints = { decodedPolyline };
+  // const requestDataForDynamicRadius = { generatedWaypoints };
+  // const requestDataForImmediateWaypoints = { generatedWaypoints };
 
-  fetch(`${targetAppUrl}/usr/node/dyn-service`, {
-    //dynamicradius
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestDataForDynamicRadius),
-  })
-    .then((response) => {
-      if (response.ok) {
-        minRadius = response.json();
-      } else {
-        throw new Error("Failed to get response from target app");
-      }
-    })
-    .then((data) => {
-      console.log("Got response from target app:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-    });
+  // fetch(`${targetAppUrl}`, {
+  //   // to be done for decodePolyline
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(requestDataForDecodeWaypoints),
+  // })
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       decodedPolyline = response.json();
+  //     } else {
+  //       throw new Error("Failed to get response from target app");
+  //     }
+  //   })
+  //   .then((data) => {
+  //     console.log("Got response from target app:", data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error.message);
+  //   });
 
-  fetch(`${targetAppUrl}/usr/node/imm-service`, {
-    //immiediate waypoints
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestDataForImmediateWaypoints),
-  })
-    .then((response) => {
-      if (response.ok) {
-        immediateWaypoint2 = response.json();
-      } else {
-        throw new Error("Failed to get response from target app");
-      }
-    })
-    .then((data) => {
-      console.log("Got response from target app:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error.message);
-    });
+  // fetch(`${targetAppUrl}/usr/node/gen-service`, {
+  //   //generatewaypoints
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(requestDataForGenerateWaypoints),
+  // })
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       generatedWaypoints = response.json();
+  //     } else {
+  //       throw new Error("Failed to get response from target app");
+  //     }
+  //   })
+  //   .then((data) => {
+  //     console.log("Got response from target app:", data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error.message);
+  //   });
 
-  let maxRadius = minRadius / 2 + minRadius;
+  // fetch(`${targetAppUrl}/usr/node/dyn-service`, {
+  //   //dynamicradius
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(requestDataForDynamicRadius),
+  // })
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       minRadius = response.json();
+  //     } else {
+  //       throw new Error("Failed to get response from target app");
+  //     }
+  //   })
+  //   .then((data) => {
+  //     console.log("Got response from target app:", data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error.message);
+  //   });
+
+  // fetch(`${targetAppUrl}/usr/node/imm-service`, {
+  //   //immiediate waypoints
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(requestDataForImmediateWaypoints),
+  // })
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       immediateWaypoint2 = response.json();
+  //     } else {
+  //       throw new Error("Failed to get response from target app");
+  //     }
+  //   })
+  //   .then((data) => {
+  //     console.log("Got response from target app:", data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error.message);
+  //   });
+
+  // let maxRadius = minRadius / 2 + minRadius;
 
   let returnData = {};
-  returnData.dynamic_radius = minRadius;
-  returnData.immediate_waypoints = immediateWaypoint2;
-  returnData.max_radius = maxRadius;
+  returnData.waypoints = waypoints;
+  // returnData.dynamic_radius = minRadius;
+  // returnData.immediate_waypoints = immediateWaypoint2;
+  // returnData.max_radius = maxRadius;
 
   res.status(200).json(returnData);
 };

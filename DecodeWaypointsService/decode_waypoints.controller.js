@@ -9,6 +9,7 @@ let precision = "";
 //Routes
 app.get("/", (req, res) => {
   polyline = req.body.polyline;
+  console.log(polyline);
   const result = decodePath(polyline);
   console.log(result);
   res.status(200).send(result);
