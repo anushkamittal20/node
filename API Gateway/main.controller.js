@@ -91,114 +91,116 @@ module.exports.userLocatedWithinRadius = function (req, res) {
 };
 
 module.exports.mainController = function (req, res) {
-  module.exports.mainController = function (req, res) {
-    const targetAppUrl = "http://10.20.129.249:30007";
-    let GETPolyline = req.body.polyline;
-    const requestDataForDecodeWaypoints = { GETPolyline };
+  const urlDecodeWaypoints = "http://34.101.170.111:3000";
+  const urlDynamicRadius = "http://10.20.129.249:30007";
+  const urlGenerateWaypoints = "http://10.20.129.249:30007";
+  const urlImmdediateWaypoints = "http://34.128.70.55:3000";
 
-    let decodedPolyline, generatedWaypoints, minRadius, immediateWaypoint2;
+  let polyline = req.body.polyline;
+  const requestDataForDecodeWaypoints = { polyline };
 
-    const requestDataForGenerateWaypoints = { decodedPolyline };
-    const requestDataForDynamicRadius = { generatedWaypoints };
-    const requestDataForImmediateWaypoints = { generatedWaypoints };
+  let decodedPolyline, generatedWaypoints, minRadius, immediateWaypoint2;
 
-    fetch(`${targetAppUrl}/usr/node/dec-service`, {
-      // to be done for decodePolyline
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestDataForDecodeWaypoints),
+  const requestDataForGenerateWaypoints = { decodedPolyline };
+  const requestDataForDynamicRadius = { generatedWaypoints };
+  const requestDataForImmediateWaypoints = { generatedWaypoints };
+
+  fetch(`${targetAppUrl}`, {
+    // to be done for decodePolyline
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestDataForDecodeWaypoints),
+  })
+    .then((response) => {
+      if (response.ok) {
+        decodedPolyline = response.json();
+      } else {
+        throw new Error("Failed to get response from target app");
+      }
     })
-      .then((response) => {
-        if (response.ok) {
-          decodedPolyline = response.json();
-        } else {
-          throw new Error("Failed to get response from target app");
-        }
-      })
-      .then((data) => {
-        console.log("Got response from target app:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error.message);
-      });
-
-    fetch(`${targetAppUrl}/usr/node/gen-service`, {
-      //generatewaypoints
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestDataForGenerateWaypoints),
+    .then((data) => {
+      console.log("Got response from target app:", data);
     })
-      .then((response) => {
-        if (response.ok) {
-          generatedWaypoints = response.json();
-        } else {
-          throw new Error("Failed to get response from target app");
-        }
-      })
-      .then((data) => {
-        console.log("Got response from target app:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error.message);
-      });
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 
-    fetch(`${targetAppUrl}/usr/node/dyn-service`, {
-      //dynamicradius
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestDataForDynamicRadius),
+  fetch(`${targetAppUrl}/usr/node/gen-service`, {
+    //generatewaypoints
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestDataForGenerateWaypoints),
+  })
+    .then((response) => {
+      if (response.ok) {
+        generatedWaypoints = response.json();
+      } else {
+        throw new Error("Failed to get response from target app");
+      }
     })
-      .then((response) => {
-        if (response.ok) {
-          minRadius = response.json();
-        } else {
-          throw new Error("Failed to get response from target app");
-        }
-      })
-      .then((data) => {
-        console.log("Got response from target app:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error.message);
-      });
-
-    fetch(`${targetAppUrl}/usr/node/imm-service`, {
-      //immiediate waypoints
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestDataForImmediateWaypoints),
+    .then((data) => {
+      console.log("Got response from target app:", data);
     })
-      .then((response) => {
-        if (response.ok) {
-          immediateWaypoint2 = response.json();
-        } else {
-          throw new Error("Failed to get response from target app");
-        }
-      })
-      .then((data) => {
-        console.log("Got response from target app:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error.message);
-      });
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 
-    let maxRadius = minRadius / 2 + minRadius;
+  fetch(`${targetAppUrl}/usr/node/dyn-service`, {
+    //dynamicradius
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestDataForDynamicRadius),
+  })
+    .then((response) => {
+      if (response.ok) {
+        minRadius = response.json();
+      } else {
+        throw new Error("Failed to get response from target app");
+      }
+    })
+    .then((data) => {
+      console.log("Got response from target app:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 
-    let returnData = {};
-    returnData.dynamic_radius = minRadius;
-    returnData.immediate_waypoints = immediateWaypoint2;
-    returnData.max_radius = maxRadius;
+  fetch(`${targetAppUrl}/usr/node/imm-service`, {
+    //immiediate waypoints
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestDataForImmediateWaypoints),
+  })
+    .then((response) => {
+      if (response.ok) {
+        immediateWaypoint2 = response.json();
+      } else {
+        throw new Error("Failed to get response from target app");
+      }
+    })
+    .then((data) => {
+      console.log("Got response from target app:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
 
-    res.status(200).json(returnData);
-  };
+  let maxRadius = minRadius / 2 + minRadius;
+
+  let returnData = {};
+  returnData.dynamic_radius = minRadius;
+  returnData.immediate_waypoints = immediateWaypoint2;
+  returnData.max_radius = maxRadius;
+
+  res.status(200).json(returnData);
 };
 
 module.exports.nearestAmbulances = function (req, res) {
