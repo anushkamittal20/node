@@ -4,10 +4,9 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 let polyline = "";
-let precision = "";
 
 //Routes
-app.get("/", (req, res) => {
+app.post("/", (req, res) => {
   polyline = req.body.polyline;
   console.log(polyline);
   const result = decodePath(polyline);

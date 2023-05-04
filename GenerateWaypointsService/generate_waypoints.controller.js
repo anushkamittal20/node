@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 let initialWaypoints = [];
 app.use(express.json());
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Routes
 app.post("/", (req, res) => {

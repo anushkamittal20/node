@@ -92,6 +92,7 @@ module.exports.userLocatedWithinRadius = function (req, res) {
 
 module.exports.mainController = function (req, res) {
   const urlDecodeWaypoints = "http://34.101.170.111:3000";
+
   const urlDynamicRadius = "http://10.20.129.249:30007";
   const urlGenerateWaypoints = "http://10.20.129.249:30007";
   const urlImmdediateWaypoints = "http://34.128.70.55:3000";
