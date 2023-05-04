@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 module.exports.userLocatedWithinRadius = function (req, res) {
-  const targetAppUrl = "http://34.128.83.74:30007/";
+  const targetAppUrl = "http://34.128.70.55:30007/";
   console.log("body", req.body);
   let currentLocation = req.body.currentLocation;
   let GETImmediateWaypoints = req.body.iwaypoints;

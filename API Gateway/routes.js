@@ -12,10 +12,10 @@ router
   .route("/userLocatedWithinRadius/")
   .post(appController.userLocatedWithinRadius);
 
-router.route("/nearestAmbulance").get(appController.nearestAmbulances);
+router.route("/nearestAmbulance").post(appController.nearestAmbulances);
 
-router.route("/confirmUser").get(appController.notify);
-router.route("/confirmAmbulance").get(appController.notify2);
-router.route("/ambulanceReturn").get(appController.ambulanceReturn);
+router.route("/confirmUser").post(appController.notify);
+router.route("/confirmAmbulance").post(appController.notify2);
+router.route("/ambulanceReturn").post(appController.ambulanceReturn);
 
 module.exports = router;
